@@ -5,12 +5,11 @@
 ██╔═══╝ ██╔══██║██╔══██║██║██║     
 ██║     ██║  ██║██║  ██║██║███████╗
 ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚══════╝
-```
 
 P o o r - m a n ’ s   H i g h l y  
   A v a i l a b l e   I n t e r n e t  
      L o a d  B a l a n c e r
-
+```
 ![PHAIL Status](https://img.shields.io/badge/PHAIL-PASSING-green?style=flat-square&logo=cloudflare)
 ![Budget](https://img.shields.io/badge/Budget-$5%2Fmo-orange?style=flat-square&logo=money)
 ![Uptime](https://img.shields.io/badge/Uptime-99.9%25-yellow?style=flat-square)

@@ -86,7 +86,13 @@ PHAIL is your broke bestie for pretending you run multi-cloud failover.
 
 2️⃣ create a config.json with your services
 
-3️⃣ go run goblin.go dns.go
+3️⃣ export your env variables:
+```bash
+    export CF_API_TOKEN=YourCloudflareAPIToken
+    export CF_ZONE_ID=YourCloudflareZoneID
+```
+
+4️⃣ go run goblin.go dns.go
 
 ## 😭 known issues
 • DNS TTL isn’t magic, you may encounter up to 1 min of downtime per failure.

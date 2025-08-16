@@ -23,7 +23,7 @@ P o o r - m a n ’ s   H i g h l y
 
 ## ✨ wtf is PHAIL?
 
-PHAIL is your **$5 “global load balancer”** knockoff — a squad of feral Bun goblins that:
+PHAIL is your **$5 “global load balancer”** knockoff — a squad of feral Go goblins that:
 - Gossip about which nodes are alive 💀
 - Elect a ✨ main character ✨ to flip Cloudflare DNS
 - Rage-flips A records when your API decides to head out.
@@ -84,21 +84,21 @@ PHAIL is your broke bestie for pretending you run multi-cloud failover.
 
 1️⃣ git clone this scuffed repo
 
-2️⃣ bun install
+2️⃣ create a config.json with your services
 
-3️⃣ bun run dev
+3️⃣ go run goblin.go dns.go
 
 ## 😭 known issues
 • DNS TTL isn’t magic, you may encounter up to 1 min of downtime per failure.
 
 ## 🫡 license
 
-GPLv3. No refunds. No uptime SLA. If you PHAIL, that’s on you.
+MIT. No refunds. No uptime SLA. If you PHAIL, that’s on you.
 
 ## 🫶 PHAIL: You only live once. Keep your servers up. Mostly.
 
 ## 👀 made with:
-• Bun
+• Go
 
 • bad life choices
 

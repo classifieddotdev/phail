@@ -43,6 +43,7 @@ type Config struct {
 }
 
 func main() {
+	log.SetOutput(os.Stdout)
 	printBanner()
 	data, err := os.ReadFile("config.json")
 	if err != nil {

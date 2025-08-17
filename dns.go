@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"log"
 	"context"
 	"io"
 	"time"
@@ -68,9 +69,9 @@ func updateDNSRecord(name, ip string, healthy bool) error {
 	}
 	
 	if healthy == true {
-		fmt.Printf("[%s] Target is healthy. Pointing DNS to primary IP", name)
+		log.Printf("[%s] Target is healthy. Pointing DNS to primary IP", name)
 	} else {
-		fmt.Printf("[%s] Target is unhealthy. Pointing DNS to failover IP", name)
+		log.Printf("[%s] Target is unhealthy. Pointing DNS to failover IP", name)
 	}
 	
 	

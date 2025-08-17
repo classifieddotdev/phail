@@ -10,6 +10,22 @@ import (
 	"time"
 )
 
+func printBanner() {
+	log.Println(`
+	██████╗ ██╗  ██╗ █████╗ ██╗██╗     
+	██╔══██╗██║  ██║██╔══██╗██║██║     
+	██████╔╝███████║███████║██║██║     
+	██╔═══╝ ██╔══██║██╔══██║██║██║     
+	██║     ██║  ██║██║  ██║██║███████╗
+	╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚══════╝
+	
+	P o o r - m a n ’ s   H i g h l y  
+	  A v a i l a b l e   I n t e r n e t  
+	     L o a d  B a l a n c e r
+	
+	Started at: ` + time.Now().UTC().Format(time.RFC3339) + "\n")
+}
+
 type Target struct {
 	Name         string `json:"name"`
 	Target       string `json:"target"`
@@ -27,6 +43,7 @@ type Config struct {
 }
 
 func main() {
+	printBanner()
 	data, err := os.ReadFile("config.json")
 	if err != nil {
 		log.Fatalf("Error reading config: %v", err)

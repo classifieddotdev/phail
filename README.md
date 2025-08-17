@@ -80,6 +80,29 @@ PHAIL is your broke bestie for pretending you run multi-cloud failover.
 |                    |               |
 ```
 
+## 🐳 Run with Docker 
+
+### docker run
+```bash
+    docker run \
+    -e CF_API_TOKEN=your_token_here \
+    -e CF_ZONE_ID=your_zone_id_here \
+    -v ./config.json:/root/config.json \
+    phail
+```
+
+### docker compose
+```yaml
+services:
+  phail:
+    image: phail
+    environment:
+      CF_API_TOKEN: your_token_here
+      CF_ZONE_ID: your_zone_id_here
+    volumes:
+      - ./config.json:/root/config.json
+```
+
 ## 🧃 quickstart (development)
 
 1️⃣ git clone this scuffed repo

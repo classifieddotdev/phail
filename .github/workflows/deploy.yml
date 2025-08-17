@@ -12,9 +12,9 @@ permissions:
   contents: read
 
 jobs:
-  deploy:
-    name: deploy
-    runs-on: ubuntu-latest
+  build:
+    name: build
+    runs-on: ubuntu-24.04-arm
     steps:
     - name: Push to Github Container Repository
       uses: Clipr-Group/ghcr-action@v1

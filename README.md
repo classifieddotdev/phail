@@ -88,14 +88,14 @@ PHAIL is your broke bestie for pretending you run multi-cloud failover.
     -e CF_API_TOKEN=your_token_here \
     -e CF_ZONE_ID=your_zone_id_here \
     -v ./config.json:/root/config.json \
-    phail
+    ghcr.io/classifieddotdev/phail:latest
 ```
 
 ### docker compose
 ```yaml
 services:
   phail:
-    image: phail
+    image: ghcr.io/classifieddotdev/phail:latest
     environment:
       CF_API_TOKEN: your_token_here
       CF_ZONE_ID: your_zone_id_here

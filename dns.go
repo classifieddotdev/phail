@@ -110,7 +110,7 @@ func updateDNSRecord(name, ip string, healthy bool, notifier *router.ServiceRout
 
 	//send shoutrrr
 	params := &types.Params{
-    	"title": "PHAIL-OVER",
+    	"title": name,
 	}
 	if notifier != nil {
 		notifier.Send(message, params)

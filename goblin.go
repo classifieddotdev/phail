@@ -8,6 +8,8 @@ import (
 	"net/http"
 	"os"
 	"time"
+	"github.com/containrrr/shoutrrr"
+	"github.com/containrrr/shoutrrr/pkg/router"
 )
 
 func printBanner() {
@@ -39,7 +41,8 @@ type Target struct {
 }
 
 type Config struct {
-	Targets []Target `json:"targets"`
+	Targets         []Target `json:"targets"`
+	ShoutrrrURLs    []string `json:"shoutrrr_urls"`
 }
 
 func main() {
@@ -54,16 +57,24 @@ func main() {
 	if err := json.Unmarshal(data, &cfg); err != nil {
 		log.Fatalf("Error parsing config: %v", err)
 	}
+	var notifier *router.ServiceRouter
+	if len(cfg.ShoutrrrURLs) > 0 {
+		notifier, err = shoutrrr.CreateSender(cfg.ShoutrrrURLs...)
+		if err != nil {
+			log.Fatalf("Failed to create shoutrrr sender: %v", err)
+		}
+	}
+
 
 	for _, t := range cfg.Targets {
 		target := t
-		go monitorTarget(target)
+		go monitorTarget(target, notifier)
 	}
 
 	select {} // this stops go from exiting
 }
 
-func monitorTarget(t Target) {
+func monitorTarget(t Target, notifier *router.ServiceRouter) {
 	client := &http.Client{
 		Timeout: 3 * time.Second,
 	}
@@ -91,7 +102,7 @@ func monitorTarget(t Target) {
 			currentIP = t.FailoverIP
 		}
 
-		if err := updateDNSRecord(t.DNSName, currentIP, healthy); err != nil {
+		if err := updateDNSRecord(t.DNSName, currentIP, healthy, notifier); err != nil {
 			log.Printf("[%s] Error updating DNS: %v", t.DNSName, err)
 		}
 

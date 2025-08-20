@@ -2,17 +2,20 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
+	"io"
+	"log"
 	"net/http"
 	"os"
-	"log"
-	"context"
-	"io"
 	"time"
+
 	"github.com/cloudflare/cloudflare-go/v5"
 	"github.com/cloudflare/cloudflare-go/v5/dns"
 	"github.com/cloudflare/cloudflare-go/v5/option"
+	"github.com/containrrr/shoutrrr/pkg/router"
+	"github.com/containrrr/shoutrrr/pkg/types"
 )
 
 var (
@@ -33,7 +36,7 @@ type DNSRecord struct {
 	ID      string `json:"id"`
 }
 
-func updateDNSRecord(name, ip string, healthy bool) error {
+func updateDNSRecord(name, ip string, healthy bool, notifier *router.ServiceRouter) error {
 	//first get the record id
 	url := fmt.Sprintf("https://api.cloudflare.com/client/v4/zones/%s/dns_records?name=%s", cfZoneID, name)
 	req, err := http.NewRequest(
@@ -68,7 +71,7 @@ func updateDNSRecord(name, ip string, healthy bool) error {
 		return nil
 	}
 	
-	if healthy == true {
+	if healthy {
 		log.Printf("[%s] Target is healthy. Pointing DNS to primary IP", name)
 	} else {
 		log.Printf("[%s] Target is unhealthy. Pointing DNS to failover IP", name)
@@ -103,6 +106,14 @@ func updateDNSRecord(name, ip string, healthy bool) error {
 	
 	if err != nil {
 		return err
+	}
+
+	//send shoutrrr
+	params := &types.Params{
+    	"title": "PHAIL-OVER",
+	}
+	if notifier != nil {
+		notifier.Send(message, params)
 	}
 	
 	return nil

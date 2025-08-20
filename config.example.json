@@ -22,5 +22,10 @@
       "retries": 3,
       "retry_interval": 5
     }
+  ],
+  "shoutrrr_urls": [ // optional if you want alerts
+    "discord://token@id",
+    "generic://example.com?template=json",
+    "slack://[botname@]token-a/token-b/token-c"
   ]
 }

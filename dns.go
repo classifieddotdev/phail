@@ -118,3 +118,22 @@ func updateDNSRecord(name, ip string, healthy bool, notifier *router.ServiceRout
 	
 	return nil
 }
+
+func notify(name string, healthy bool, notifier *router.ServiceRouter) error {
+	timestamp := time.Now().UTC().Format(time.RFC3339)
+	prefix := "[FAILOVER]"
+	if healthy {
+	    prefix = "[HEALTHY]"
+	}
+	message := fmt.Sprintf("%s Updated by PHAIL at %s", prefix, timestamp)
+
+	//send shoutrrr
+	params := &types.Params{
+    	"title": name,
+	}
+	if notifier != nil {
+		notifier.Send(message, params)
+	}
+	
+	return nil
+}

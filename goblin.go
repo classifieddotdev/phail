@@ -38,6 +38,7 @@ type Target struct {
 	IgnoreSSL    bool   `json:"ignoreSSL"`
 	Retries      int    `json:"retries"`
 	RetryInterval int   `json:"retry_interval"`
+	MonitorOnly bool   `json:"monitor_only"`
 }
 
 type Config struct {
@@ -84,13 +85,19 @@ func monitorTarget(t Target, notifier *router.ServiceRouter) {
 		}
 	}
 
+	var lastHealthy bool
+	var initialized bool
+
 	for {
 		healthy := false
 		for i := 0; i < t.Retries; i++ {
 			resp, err := client.Get(t.Target)
-			if err == nil && resp.StatusCode == 200 {
-				healthy = true
-				break
+			if err == nil {
+				resp.Body.Close()
+				if resp.StatusCode == 200 {
+					healthy = true
+					break
+				}
 			}
 			time.Sleep(time.Duration(t.RetryInterval) * time.Second)
 		}
@@ -102,9 +109,19 @@ func monitorTarget(t Target, notifier *router.ServiceRouter) {
 			currentIP = t.FailoverIP
 		}
 
-		if err := updateDNSRecord(t.DNSName, currentIP, healthy, notifier); err != nil {
-			log.Printf("[%s] Error updating DNS: %v", t.DNSName, err)
+		if t.MonitorOnly {
+			if !initialized || lastHealthy != healthy {
+				notify(t.DNSName, healthy, notifier)
+				lastHealthy = healthy
+				initialized = true
+			}
+		} else {
+			if err := updateDNSRecord(t.DNSName, currentIP, healthy, notifier); err != nil {
+				log.Printf("[%s] Error updating DNS: %v", t.DNSName, err)
+			}
 		}
+
+		
 
 		time.Sleep(time.Duration(t.PingInterval) * time.Second)
 	}
